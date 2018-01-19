@@ -2,9 +2,18 @@
 body
 {
   text-align: center;
+  background: url('../images/hangman.jpeg');
 }
 
 .container
 {
-  border: 5px solid #aaaaaa;
+  border: 10px solid #aaaaaa;
+  min-height: 500px;
+  min-width: 500px;
+  background-color: #bbbbbb;
+}
+
+h1
+{
+  color: #444444;
 }
