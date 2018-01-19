@@ -58,7 +58,6 @@ function revealLetter(currentWord,placeHolder,letter)
       }
     }
   }
-  console.log("newPlaceHolder "+newPlaceHolder+" letter "+letter);
   return newPlaceHolder;
 }
 
@@ -92,25 +91,25 @@ function playGame()
   document.querySelector(".box").innerHTML = "<p> PRESS ANY KEY TO GET STARTED </p>";
   document.onkeyup = function(event)
   {
+    var guess = event.key
     if(newGame){
-      event.key = "Meta";
+      guess = "Meta"; /*to be ignored*/
       reset();
       currentWord = words[Math.floor(Math.random()*words.length)];
       placeHolder = getPlaceHolder(currentWord);
-      console.log(currentWord);
       showStats(placeHolder);
       newGame = 0;
     }
-    if(isPresent(currentWord, event.key))
+    if(isPresent(currentWord, guess))
     {
-      placeHolder = revealLetter(currentWord,placeHolder, event.key);
+      placeHolder = revealLetter(currentWord,placeHolder, guess);
     }
     else
     {
-      if(isAlphabet(event.key) && !isPresent(lettersGuessed,event.key))
+      if(isAlphabet(guess) && !isPresent(lettersGuessed,guess))
       {
         guessesLeft--;
-        lettersGuessed.push(event.key)
+        lettersGuessed.push(guess)
       }
     }
     
