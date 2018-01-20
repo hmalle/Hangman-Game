@@ -1,5 +1,5 @@
 
-var newGame=true; //This value to be used in gameplaying.
+var newGame=true; //to check whether to call reset()
 var placeHolder =""; //Value used to store user correct guesses
 var wins= 0;
 var losses=0;
@@ -29,6 +29,7 @@ function isPresent(currentWord, letter)
 
 function isAlphabet(character)
 {
+  /*regex to check if the user input is an alphabet*/
   if( character.match(/[a-z]/i) && character.length === 1)
   {
     return true;
@@ -86,20 +87,36 @@ function showStats(placeHolder)
   document.querySelector(".box").innerHTML = stats;
 }
 
+function revealWord(currentWord)
+{
+  //it was fun figuring out where innerHTML will start looking for the image. :)
+  answer="<p> PRESS ANY KEY TO GET STARTED </p>"+
+         "<h2> YOU LOST </h2>"+
+         "<img src='assets/images/hangedman.gif' alt='hanged'>"+
+         "<p>The word was</p>"+
+         "<p>"+currentWord +"</p>";
+  document.querySelector(".box").innerHTML = answer;
+}
+
 function playGame()
 {
   document.querySelector(".box").innerHTML = "<p> PRESS ANY KEY TO GET STARTED </p>";
   document.onkeyup = function(event)
   {
-    var guess = event.key
-    if(newGame){
+    var guess = event.key.toLowerCase();
+
+    if(newGame)
+    {
       guess = "Meta"; /*to be ignored*/
       reset();
       currentWord = words[Math.floor(Math.random()*words.length)];
       placeHolder = getPlaceHolder(currentWord);
       showStats(placeHolder);
       newGame = 0;
+      console.log(currentWord); //for testing only
     }
+
+    /*----------if else block --------------------*/
     if(isPresent(currentWord, guess))
     {
       placeHolder = revealLetter(currentWord,placeHolder, guess);
@@ -112,20 +129,22 @@ function playGame()
         lettersGuessed.push(guess)
       }
     }
-    
+    /*---------------------------------------------*/
     if(currentWord === placeHolder)
     {
       wins++;
       showStats(placeHolder);
       newGame = true;
     }
+    showStats(placeHolder);
+    
     if (guessesLeft === 0)
     {
       losses++;
-      showStats(placeHolder);
+      //showStats(placeHolder);
       newGame = true;
+      revealWord(currentWord);
     }
-    showStats(placeHolder);
   }
 }
 
